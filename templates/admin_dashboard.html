@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <h1>Admin Dashboard</h1>
+                <nav>
+                    <a href="{{ url_for('create_service')}}">Create Service</a>
+                    <a href="{{ url_for('logout')}}">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-container">
+        <form action="/admin_search_service_professional" method="GET">
+                
+                    <input type="text" name="service" class="form-control" placeholder="Search by service" value="{{ request.args.get('service', '') }}">
+                    <input type="text" name="user_name" class="form-control" placeholder="Search by User Name" value="{{ request.args.get('user_name', '') }}">
+                    <button type="submit" class="btn btn-primary">Search</button>
+            
+        </form></div>
+        
+        
+        {% if service_professional_searched %}
+    <h2>Service Professionals Searched</h2>
+    <table id="registration-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Services</th>  
+                <th>Blocked</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sp in service_professional_searched %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.username }}</td>
+                    <td>{{ sp.email }}</td>
+                    <td>{{ sp.work }}</td>  
+                    <td>{{ 'Yes' if sp.status else 'No' }}</td>  
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+
+{% if customer_searched %}
+    <h2>Searched Customer</h2>
+    <table id="registration-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Services</th>  
+                <th>Pincode</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sp in customer_searched %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.username }}</td>
+                    <td>{{ sp.email }}</td>
+                    <td>{{ service_re.service_service if sp.username==service_re.username }}</td>  
+                    <td>{{ sp.pincode }}</td>  
+                    <td>{{ sp.phone }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+         
+
+
+
+        {% if service_professional%}
+        <h2>New Service Professional Registrations</h2>
+        <table id="registration-table">
+            <thead >
+                <tr >
+                    <th> Id </th>
+                    <th >Name</th>
+                    <th >Email</th>
+                    <th >Service</th>
+                    <th >Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in service_professional%}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.username}}</td>
+                    <td>{{ sp.email}}</td>
+                    <td>{{ sp.work}}</td>
+                    <td >
+                        <form action="{{ url_for('admin_approve_service_professional',username=sp.username)}}" method="post" >
+                            
+                            <input type="submit" value="Accept" style="cursor: pointer">
+                        </form>
+                        <form action="{{ url_for('admin_decline_service_professional',username=sp.username)}}" method="post" >
+                            
+                            <input type="submit" value="Decline" style="cursor: pointer">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+
+
+        
+        {% if service%}
+        <h2>Services Provided</h2>
+        <table id="services-provided-table">
+            <thead >
+                <tr >
+                    <th> Id </th>
+                    <th >Service</th>
+                    <th >Charges</th>
+                    <th >Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in service%}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.service}}</td>
+                    <td>{{ sp.charges}}</td>
+                    <td >
+                        <form action={{ url_for('admin_service_edit', service=sp.service )}} method="post" >
+                            
+                            <input type="submit" value="Edit" style="cursor: pointer">
+                        </form>
+                        <form action={{ url_for('admin_service_delete',service=sp.service )}} method="post" >
+                            
+                            <input type="submit" value="delete" style="cursor: pointer">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif%}
+
+        
+        
+        {% if user%}
+        <h2>Customer</h2>
+        <table id="customer-table">
+            <thead >
+                <tr >
+                    <th> Id </th>
+                    <th >Name</th>
+                    <th >Phone</th>
+                    <th >Pincode</th>
+                    <th >Email</th>
+                    <th >Block</th>
+                    <th >Block/Unblock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in user%}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.username}}</td>
+                    <td>{{ sp.phone}}</td>
+                    <td>{{ sp.pincode}}</td>
+                    <td>{{ sp.email}}</td>
+                    <td>{{ sp.status}}</td>
+                    <td >
+                        <form action={{ url_for('admin_c_block',username=sp.username)}} method="post" >
+                            
+                            <input type="submit" value="Block" style="cursor: pointer">
+                        </form>
+                        <form action={{ url_for('admin_c_unblock',username=sp.username)}} method="post" >
+                            
+                            <input type="submit" value="Unblock" style="cursor: pointer">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif%}
+
+
+        
+        {% if service_professional_check%}
+        <h2>Service Professional Available</h2>
+        <table id="services-provided-table">
+            <thead >
+                <tr >
+                    <th> Id </th>
+                    <th >Name</th>
+                    <th >Email</th>
+                    <th >Service</th>
+                    <th >Block</th>
+                    <th >Block/Unblock</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in service_professional_check%}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.username}}</td>
+                    <td>{{ sp.email}}</td>
+                    <td>{{ sp.work}}</td>
+                    <td>{{ sp.status}}</td>
+                    <td >
+                        <form action={{ url_for('admin_sp_block',username=sp.username)}} method="post" >
+                            
+                            <input type="submit" value="Block" style="cursor: pointer">
+                        </form>
+                        <form action={{ url_for('admin_sp_unblock',username=sp.username)}} method="post" >
+                            
+                            <input type="submit" value="Unblock" style="cursor: pointer">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif%}
+    </div>
+</body>
+</html>

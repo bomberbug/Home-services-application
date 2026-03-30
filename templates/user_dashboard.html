@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <h1>User Dashboard</h1>
+                <nav>
+                    <a href="{{ url_for('logout')}}">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="search-container">
+            <form action="/customer_search_services" method="GET">
+                    
+                        <input type="number" name="cost" class="form-control" placeholder="Search by Cost" value="{{ request.args.get('cost', '') }}">
+                        <input type="text" name="service" class="form-control" placeholder="Search by Service" value="{{ request.args.get('service', '') }}">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                
+            </form></div>
+
+            {% if service_p %}
+    <h2>Service Professionals Searched</h2>
+    <table id="registration-table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Service</th>
+                <th>cost</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sp in service_p %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.service }}</td>
+                    <td>{{ sp.charges }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endif %}
+
+        
+        {% if service%}
+        <h2>Services Available</h2>
+        <table id="services-available-table">
+            <thead >
+                <tr >
+                    <th >ID</th>
+                    <th >Service</th>
+                    <th >Charges</th>
+                    <th >Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in service%}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.service}}</td>
+                    <td>{{ sp.charges}}</td>
+                    <td >
+                        <form method="post" >
+                            <button type="submit" id="Request for Service" >
+                                <a href="{{ url_for('create_service_request',service=sp.service)}}" style="cursor: pointer ;text-decoration: none; color: inherit">
+                                    Request for Service
+                                </a>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif%}
+
+        
+        {% if service_request %}
+        <h2>Services Requested</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Service</th>
+                    <th>Charges</th>
+                    <th>Pincode</th>
+                    <th>Date</th>
+                    <th>Accepted By</th>
+                    <th>Service Done</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in service_request %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.service.service}}</td>
+                    <td>{{ sp.service.charges }}</td>
+                    <td>{{ sp.pincode}}</td>
+                    <td>{{ sp.date}}</td>
+                    <td>{{ sp.handled_by}}</td>
+                    <td>{{ "Yes" if sp.completed else "No"}}</td>
+                    <td >
+                        <form action={{ url_for('customer_service_edit',id=sp.id)}} method="post" >
+                            
+                            <input type="submit" value="Edit" style="cursor: pointer">
+                        </form>
+                        <form action={{ url_for('customer_service_delete',id=sp.id)}} method="post" >
+                            
+                            <input type="submit" value="delete" style="cursor: pointer">
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif%}
+    </div>
+</body>
+</html>

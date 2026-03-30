@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html >
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+    <link rel="stylesheet" href="/static/style_log.css">
+    <script>
+        function showForm() {
+          
+            const selectedValue = document.getElementById("Register As").value;
+
+            const forms = document.querySelectorAll('.form-container');
+            forms.forEach(form => form.style.display = 'none');
+
+            if (selectedValue === "customer") {
+                document.getElementById("user").style.display = 'block';
+            } else if (selectedValue === "service_professional") {
+                document.getElementById("service_professional").style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body>
+
+<div class="container">
+    <div>
+        <h2>Register As</h2>
+        <label for="Register As">Select:</label>
+        <select id="Register As" onchange="showForm()">
+            <option value="">Motive</option>
+            <option value="customer">Customer</option>
+            <option value="service_professional">Service Professional</option>
+        </select>
+    </div>
+    
+    <!-- Customer Registration Form -->
+    <form action="/register" method="post" id="user" class="form-container">
+        <input type="hidden" name="form_id" value="user">
+        <h1>Customer</h1>
+        
+        <label for="name">Username:</label>
+        <input type="text" id="name" name="name"><br><br>
+        
+        <label for="phone">Phone No.:</label>
+        <input type="number" id="phone" name="phone"><br><br>
+    
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+    
+        <label for="pincode">Pincode:</label>
+        <input type="number" id="pincode" name="pincode"><br><br>
+    
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+    
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword"><br><br>
+    
+        <input type="submit" class="submit" value="Register">
+    </form>
+    
+    <!-- Service Professional Registration Form -->
+    <form action="/register" method="post" id="service_professional" class="form-container" style="display: none;">
+        <input type="hidden" name="form_id" value="service_professional">
+        <h2>Service Professional</h2>
+        
+        <label for="name">Username:</label>
+        <input type="text" id="name" name="name"><br><br>
+    
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email"><br><br>
+
+        <label>Expertise:</label>
+        <div >
+        <label>
+            <input type="checkbox" name="options" value="Cleaning">
+            Cleaning
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" name="options" value="Plumber">
+            Plumber
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" name="options" value="Cook">
+            Cook
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" name="options" value="Painting">
+            Painting
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" name="options" value="Pet's services">
+            Pet's Services
+        </label>
+        <br>
+        <label>
+            <input type="checkbox" name="options" value="pest control">
+            Pest Control
+        </label><br><br>
+        </div>
+
+    
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password"><br><br>
+    
+        <label for="confirmPassword">Confirm Password:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword"><br><br>
+
+    
+        <input type="submit" class="submit" value="Register">
+    </form>
+</div>
+</body>
+</html>

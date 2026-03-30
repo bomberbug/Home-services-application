@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Professional Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="navbar">
+                <h1>Service Professional Dashboard</h1>
+                <nav>
+                    <a href="{{ url_for('logout')}}">Logout</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+       
+
+        <h2>Services Available</h2>
+        {% if service_request%}
+        <table id="services-available-table">
+            <thead >
+                <tr >
+                    <th >ID</th>
+                    <th >Service</th>
+                    <th >Date</th>
+                    <th >pincode</th>
+                    <th >Customer</th>
+                    <th >Status</th>
+                    <th >Accepted_by</th>
+                    <th >Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in service_request %}
+                    {% if sp.service.service in professional.work %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ sp.service }}</td>
+                            <td>{{ sp.date }}</td>
+                            <td>{{ sp.pincode }}</td>
+                            <td>{{ sp.username }}</td>
+                            <td>{{ sp.status }}</td>
+                            <td>{{ sp.handled_by }}</td>
+                            <td>
+                                <form action="{{ url_for('accept_service_request', id=sp.id) }}" method="post">
+                                    <input type="submit" value="Accept" style="cursor: pointer"
+                                    {% if sp.handled_by is not none  %}disabled{% endif %}>
+                                </form>
+                                <form action="{{ url_for('reject_service_request', id=sp.id) }}" method="post">
+                                    <input type="submit" value="Reject" style="cursor: pointer"
+                                    {% if sp.status == 'accepted' %}disabled{% endif %}>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>--No Service Available--</p>
+        {% endif%}
+
+
+
+        <h2>Pending work</h2>
+        {% if request_accepted%}
+        <table id="services-available-table">
+            <thead >
+                <tr >
+                    <th >ID</th>
+                    <th >Service</th>
+                    <th >Date</th>
+                    <th >pincode</th>
+                    <th >Customer</th>
+                    <th> Status </th>
+                    <th >Completed</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for sp in request_accepted%}
+                {% if sp.service.service in professional.work %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ sp.service}}</td>
+                    <td>{{ sp.date}}</td>
+                    <td>{{ sp.pincode}}</td>
+                    <td>{{ sp.username}}</td>
+                    <td>{{ sp.completed }}</td>
+                    <td >
+                        <form action="{{ url_for('work_done', id=sp.id) }}"  method="post" >
+                            
+                            <input type="submit" value="Done" style="cursor: pointer">
+                        </form>
+                    </td>
+                </tr>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <p>--No pending work--</p>
+        {% endif%}
+
+    </div>
+</body>
+</html>

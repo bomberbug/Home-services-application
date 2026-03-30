@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Login</title>
+    <link rel="stylesheet" href="/static/style_log.css">
+    <script>
+        function showForm() {
+            
+            const selectedValue = document.getElementById("person_aim").value;
+
+            const forms = document.querySelectorAll('.form-container');
+            forms.forEach(form => form.style.display = 'none');
+
+            if (selectedValue === "customer") {
+                document.getElementById("user").style.display = 'block';
+            } else if (selectedValue === "service_professional") {
+                document.getElementById("service_professional").style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body>
+    
+<div class="container">    
+    <label for="person_aim">Login as:</label>
+    <select id="person_aim" onchange="showForm()">
+        <option value="">Select</option>
+        <option value="customer">Customer</option>
+        <option value="service_professional">Service Professional</option>
+    </select>
+
+    <div>
+        <form action="/login" method="post" id="user" class="form-container" >
+            <input type="hidden" name="form_id" value="user">
+            <h1>Customer</h1>
+
+            <label for="name">Username:</label>
+            <input type="text" id="name" name="name" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required><br><br>
+
+            <input type="submit" class="submit" value="Login">
+        </form>
+    </div>
+
+    <div >
+        <form action="/login" method="post" id="service_professional" class="form-container">
+            <input type="hidden" name="form_id" value="service_professional">
+            <h1>Service Professional</h1>
+        
+
+            <label for="name">Username:</label>
+            <input type="text" id="name_service" name="name" required><br><br>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required><br><br>
+
+            <label for="password_service">Password:</label>
+            <input type="password" id="password_service" name="password" required><br><br>
+
+            <input type="submit" class="submit" value="Login">
+        </form><br>
+    </div>
+</div>   
+</body>
+</html>
