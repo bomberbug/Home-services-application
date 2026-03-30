@@ -10,8 +10,8 @@ app.config['SQLALCHEMY_ECHO'] = True
 db.init_app(app)
 
 # Admin credentials
-ADMIN_USERNAME = "XYZ"
-ADMIN_PASSWORD = "1234"
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "admin"
 
 
 @app.route('/')
